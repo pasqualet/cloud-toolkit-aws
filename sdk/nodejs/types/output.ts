@@ -12,6 +12,9 @@ import * as pulumiKubernetes from "@pulumi/kubernetes";
 export namespace commons {
 }
 
+export namespace containers {
+}
+
 export namespace databases {
 }
 

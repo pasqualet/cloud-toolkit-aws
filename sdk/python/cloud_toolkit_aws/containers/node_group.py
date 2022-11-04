@@ -127,7 +127,7 @@ class NodeGroup(pulumi.ComponentResource):
                  subnet_ids: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
-        NodeGroup is a component that deploy a Node Group for a Kubernetes cluster.
+        NodeGroup is a component that deploy the NodeGroup application in the cluster.
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -145,7 +145,7 @@ class NodeGroup(pulumi.ComponentResource):
                  args: NodeGroupArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        NodeGroup is a component that deploy a Node Group for a Kubernetes cluster.
+        NodeGroup is a component that deploy the NodeGroup application in the cluster.
 
         :param str resource_name: The name of the resource.
         :param NodeGroupArgs args: The arguments to use to populate this resource's properties.
@@ -189,46 +189,46 @@ class NodeGroup(pulumi.ComponentResource):
                 raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
             __props__.__dict__["subnet_ids"] = subnet_ids
+            __props__.__dict__["autoscaling_group"] = None
+            __props__.__dict__["capacity_provider"] = None
+            __props__.__dict__["iam_instance_profile"] = None
+            __props__.__dict__["instance_role"] = None
+            __props__.__dict__["instance_role_policy_attachments"] = None
             __props__.__dict__["launch_template"] = None
-            __props__.__dict__["node_group"] = None
-            __props__.__dict__["role"] = None
-            __props__.__dict__["role_policy_attachments"] = None
         super(NodeGroup, __self__).__init__(
-            'cloud-toolkit-aws:kubernetes:NodeGroup',
+            'cloud-toolkit-aws:containers:NodeGroup',
             resource_name,
             __props__,
             opts,
             remote=True)
 
     @property
+    @pulumi.getter(name="autoscalingGroup")
+    def autoscaling_group(self) -> pulumi.Output['pulumi_aws.autoscaling.Group']:
+        return pulumi.get(self, "autoscaling_group")
+
+    @property
+    @pulumi.getter(name="capacityProvider")
+    def capacity_provider(self) -> pulumi.Output['pulumi_aws.ecs.CapacityProvider']:
+        return pulumi.get(self, "capacity_provider")
+
+    @property
+    @pulumi.getter(name="iamInstanceProfile")
+    def iam_instance_profile(self) -> pulumi.Output['pulumi_aws.iam.InstanceProfile']:
+        return pulumi.get(self, "iam_instance_profile")
+
+    @property
+    @pulumi.getter(name="instanceRole")
+    def instance_role(self) -> pulumi.Output['pulumi_aws.iam.Role']:
+        return pulumi.get(self, "instance_role")
+
+    @property
+    @pulumi.getter(name="instanceRolePolicyAttachments")
+    def instance_role_policy_attachments(self) -> pulumi.Output[Sequence['pulumi_aws.iam.RolePolicyAttachment']]:
+        return pulumi.get(self, "instance_role_policy_attachments")
+
+    @property
     @pulumi.getter(name="launchTemplate")
     def launch_template(self) -> pulumi.Output['pulumi_aws.ec2.LaunchTemplate']:
-        """
-        The EC2 Launch Template used to provision nodes.
-        """
         return pulumi.get(self, "launch_template")
-
-    @property
-    @pulumi.getter(name="nodeGroup")
-    def node_group(self) -> pulumi.Output['pulumi_aws.eks.NodeGroup']:
-        """
-        The EKS Node Group.
-        """
-        return pulumi.get(self, "node_group")
-
-    @property
-    @pulumi.getter
-    def role(self) -> pulumi.Output['pulumi_aws.iam.Role']:
-        """
-        The IAM Role assumed by the EKS Nodes.
-        """
-        return pulumi.get(self, "role")
-
-    @property
-    @pulumi.getter(name="rolePolicyAttachments")
-    def role_policy_attachments(self) -> pulumi.Output[Sequence['pulumi_aws.iam.RolePolicyAttachment']]:
-        """
-        The list of IAM Role Policy Attachment used to attach IAM Roles to the EKS Node Group.
-        """
-        return pulumi.get(self, "role_policy_attachments")
 

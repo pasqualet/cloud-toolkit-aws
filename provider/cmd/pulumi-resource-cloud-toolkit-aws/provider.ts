@@ -7,6 +7,7 @@ import {
 } from "./commons";
 import { Queue, QueueArgs } from "./serverless/queue";
 import { EmailSender, EmailSenderArgs } from "./email/sender";
+import * as containers from "./containers";
 import {
   ArgoCD,
   ArgoCDArgs,
@@ -59,6 +60,10 @@ export class Provider implements pulumi.provider.Provider {
     switch (type) {
       case "cloud-toolkit-aws:common:Certificate":
         return await constructCertificate(name, inputs, options);
+      case "cloud-toolkit-aws:containers:Cluster":
+        return await constructContainersCluster(name, inputs, options);
+      case "cloud-toolkit-aws:containers:NodeGroup":
+        return await constructContainersNodeGroup(name, inputs, options);
       case "cloud-toolkit-aws:serverless:Queue":
         return await constructQueue(name, inputs, options);
       case "cloud-toolkit-aws:email:EmailSender":
@@ -106,6 +111,7 @@ export class Provider implements pulumi.provider.Provider {
     }
   }
 }
+
 async function constructCertificate(
   name: string,
   inputs: pulumi.Inputs,
@@ -119,6 +125,41 @@ async function constructCertificate(
       provider: resource.provider,
       certificate: resource.certificate,
       dnsRecords: resource.dnsRecords,
+    }
+  };
+}
+
+async function constructContainersCluster(
+  name: string,
+  inputs: pulumi.Inputs,
+  options: pulumi.ComponentResourceOptions
+): Promise<pulumi.provider.ConstructResult> {
+  const resource = new containers.Cluster(name, inputs as containers.ClusterArgs, options);
+
+  return {
+    urn: resource.urn,
+    state: {
+      ecsCluster: resource.ecsCluster,
+      nodeGroups: resource.nodeGroups,
+      ecsCapacityProviders: resource.ecsCapacityProviders,
+    }
+  };
+}
+
+async function constructContainersNodeGroup(
+  name: string,
+  inputs: pulumi.Inputs,
+  options: pulumi.ComponentResourceOptions
+): Promise<pulumi.provider.ConstructResult> {
+  const resource = new containers.NodeGroup(name, inputs as containers.NodeGroupArgs, options);
+
+  return {
+    urn: resource.urn,
+    state: {
+      launchTemplate: resource.launchTemplate,
+      autoscalingGroup: resource.autoscalingGroup,
+      capacityProvider: resource.capacityProvider,
+      iamInstanceProfile: resource.iamInstanceProfile,
     }
   };
 }

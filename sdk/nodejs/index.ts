@@ -13,6 +13,7 @@ utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
 
 // Export sub-modules:
 import * as commons from "./commons";
+import * as containers from "./containers";
 import * as databases from "./databases";
 import * as email from "./email";
 import * as kubernetes from "./kubernetes";
@@ -23,6 +24,7 @@ import * as types from "./types";
 
 export {
     commons,
+    containers,
     databases,
     email,
     kubernetes,

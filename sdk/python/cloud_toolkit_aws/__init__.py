@@ -11,6 +11,8 @@ from .provider import *
 if typing.TYPE_CHECKING:
     import cloud_toolkit_aws.commons as __commons
     commons = __commons
+    import cloud_toolkit_aws.containers as __containers
+    containers = __containers
     import cloud_toolkit_aws.databases as __databases
     databases = __databases
     import cloud_toolkit_aws.email as __email
@@ -25,6 +27,7 @@ if typing.TYPE_CHECKING:
     storage = __storage
 else:
     commons = _utilities.lazy_import('cloud_toolkit_aws.commons')
+    containers = _utilities.lazy_import('cloud_toolkit_aws.containers')
     databases = _utilities.lazy_import('cloud_toolkit_aws.databases')
     email = _utilities.lazy_import('cloud_toolkit_aws.email')
     kubernetes = _utilities.lazy_import('cloud_toolkit_aws.kubernetes')
@@ -41,6 +44,15 @@ _utilities.register(
   "fqn": "cloud_toolkit_aws.commons",
   "classes": {
    "cloud-toolkit-aws:commons:Certificate": "Certificate"
+  }
+ },
+ {
+  "pkg": "cloud-toolkit-aws",
+  "mod": "containers",
+  "fqn": "cloud_toolkit_aws.containers",
+  "classes": {
+   "cloud-toolkit-aws:containers:Cluster": "Cluster",
+   "cloud-toolkit-aws:containers:NodeGroup": "NodeGroup"
   }
  },
  {

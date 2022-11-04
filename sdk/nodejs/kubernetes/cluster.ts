@@ -102,15 +102,7 @@ export class Cluster extends pulumi.ComponentResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["addons"] = args ? args.addons : undefined;
-            resourceInputs["api"] = args ? args.api : undefined;
-            resourceInputs["baseDomain"] = args ? args.baseDomain : undefined;
             resourceInputs["nodeGroups"] = args ? args.nodeGroups : undefined;
-            resourceInputs["oidcProviders"] = args ? args.oidcProviders : undefined;
-            resourceInputs["privateSubnetIds"] = args ? args.privateSubnetIds : undefined;
-            resourceInputs["publicSubnetIds"] = args ? args.publicSubnetIds : undefined;
-            resourceInputs["version"] = args ? args.version : undefined;
-            resourceInputs["vpcId"] = args ? args.vpcId : undefined;
             resourceInputs["cluster"] = undefined /*out*/;
             resourceInputs["clusterAddons"] = undefined /*out*/;
             resourceInputs["cniChart"] = undefined /*out*/;
@@ -152,39 +144,7 @@ export class Cluster extends pulumi.ComponentResource {
  */
 export interface ClusterArgs {
     /**
-     * The addons installed in the cluster.
-     */
-    addons?: pulumi.Input<inputs.kubernetes.AddonsArgsArgs>;
-    /**
-     * Configure the Kubernetes cluster API.
-     */
-    api?: pulumi.Input<inputs.kubernetes.ClusterApiArgsArgs>;
-    /**
-     * The base domain.
-     */
-    baseDomain?: pulumi.Input<string>;
-    /**
      * The NodeGroups to be assigned to this cluster.
      */
-    nodeGroups?: pulumi.Input<pulumi.Input<inputs.kubernetes.ClusterNodeGroupArgsArgs>[]>;
-    /**
-     * The OIDC Providers configuration.
-     */
-    oidcProviders?: pulumi.Input<inputs.kubernetes.ClusterOidcProvidersArgsArgs>;
-    /**
-     * The list of private subnet ids where for the EKS cluster. These subnets will be tagged for Kubernetes purposes.
-     */
-    privateSubnetIds?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * The list of public subnet ids where for the EKS cluster. These subnets will be tagged for Kubernetes purposes.
-     */
-    publicSubnetIds?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Desired Kubernetes version for control plane. Defaults to '1.22'.
-     */
-    version?: pulumi.Input<string>;
-    /**
-     * The VPC ID where the cluster will be deployed
-     */
-    vpcId?: pulumi.Input<string>;
+    nodeGroups?: pulumi.Input<pulumi.Input<inputs.containers.ContainersClusterNodeGroupArgsArgs>[]>;
 }

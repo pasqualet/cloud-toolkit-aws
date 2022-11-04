@@ -7,11 +7,11 @@ import * as utilities from "../utilities";
 import * as pulumiAws from "@pulumi/aws";
 
 /**
- * NodeGroup is a component that deploy a Node Group for a Kubernetes cluster.
+ * NodeGroup is a component that deploy the NodeGroup application in the cluster.
  */
 export class NodeGroup extends pulumi.ComponentResource {
     /** @internal */
-    public static readonly __pulumiType = 'cloud-toolkit-aws:kubernetes:NodeGroup';
+    public static readonly __pulumiType = 'cloud-toolkit-aws:containers:NodeGroup';
 
     /**
      * Returns true if the given object is an instance of NodeGroup.  This is designed to work even
@@ -24,22 +24,12 @@ export class NodeGroup extends pulumi.ComponentResource {
         return obj['__pulumiType'] === NodeGroup.__pulumiType;
     }
 
-    /**
-     * The EC2 Launch Template used to provision nodes.
-     */
+    public /*out*/ readonly autoscalingGroup!: pulumi.Output<pulumiAws.autoscaling.Group>;
+    public /*out*/ readonly capacityProvider!: pulumi.Output<pulumiAws.ecs.CapacityProvider>;
+    public /*out*/ readonly iamInstanceProfile!: pulumi.Output<pulumiAws.iam.InstanceProfile>;
+    public /*out*/ readonly instanceRole!: pulumi.Output<pulumiAws.iam.Role>;
+    public /*out*/ readonly instanceRolePolicyAttachments!: pulumi.Output<pulumiAws.iam.RolePolicyAttachment[]>;
     public /*out*/ readonly launchTemplate!: pulumi.Output<pulumiAws.ec2.LaunchTemplate>;
-    /**
-     * The EKS Node Group.
-     */
-    public /*out*/ readonly nodeGroup!: pulumi.Output<pulumiAws.eks.NodeGroup>;
-    /**
-     * The IAM Role assumed by the EKS Nodes.
-     */
-    public /*out*/ readonly role!: pulumi.Output<pulumiAws.iam.Role>;
-    /**
-     * The list of IAM Role Policy Attachment used to attach IAM Roles to the EKS Node Group.
-     */
-    public /*out*/ readonly rolePolicyAttachments!: pulumi.Output<pulumiAws.iam.RolePolicyAttachment[]>;
 
     /**
      * Create a NodeGroup resource with the given unique name, arguments, and options.
@@ -64,15 +54,19 @@ export class NodeGroup extends pulumi.ComponentResource {
             resourceInputs["minCount"] = args ? args.minCount : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["subnetIds"] = args ? args.subnetIds : undefined;
+            resourceInputs["autoscalingGroup"] = undefined /*out*/;
+            resourceInputs["capacityProvider"] = undefined /*out*/;
+            resourceInputs["iamInstanceProfile"] = undefined /*out*/;
+            resourceInputs["instanceRole"] = undefined /*out*/;
+            resourceInputs["instanceRolePolicyAttachments"] = undefined /*out*/;
             resourceInputs["launchTemplate"] = undefined /*out*/;
-            resourceInputs["nodeGroup"] = undefined /*out*/;
-            resourceInputs["role"] = undefined /*out*/;
-            resourceInputs["rolePolicyAttachments"] = undefined /*out*/;
         } else {
+            resourceInputs["autoscalingGroup"] = undefined /*out*/;
+            resourceInputs["capacityProvider"] = undefined /*out*/;
+            resourceInputs["iamInstanceProfile"] = undefined /*out*/;
+            resourceInputs["instanceRole"] = undefined /*out*/;
+            resourceInputs["instanceRolePolicyAttachments"] = undefined /*out*/;
             resourceInputs["launchTemplate"] = undefined /*out*/;
-            resourceInputs["nodeGroup"] = undefined /*out*/;
-            resourceInputs["role"] = undefined /*out*/;
-            resourceInputs["rolePolicyAttachments"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(NodeGroup.__pulumiType, name, resourceInputs, opts, true /*remote*/);

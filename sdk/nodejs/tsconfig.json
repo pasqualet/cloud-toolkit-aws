@@ -15,6 +15,9 @@
     "files": [
         "commons/certificate.ts",
         "commons/index.ts",
+        "containers/cluster.ts",
+        "containers/index.ts",
+        "containers/nodeGroup.ts",
         "databases/index.ts",
         "databases/mysql.ts",
         "email/emailSender.ts",
@@ -47,6 +50,7 @@
         "serverless/queue.ts",
         "storage/bucket.ts",
         "storage/index.ts",
+        "types/enums/containers/index.ts",
         "types/enums/databases/index.ts",
         "types/enums/email/index.ts",
         "types/enums/index.ts",

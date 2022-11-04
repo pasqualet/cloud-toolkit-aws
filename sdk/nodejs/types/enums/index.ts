@@ -2,6 +2,7 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 // Export sub-modules:
+import * as containers from "./containers";
 import * as databases from "./databases";
 import * as email from "./email";
 import * as kubernetes from "./kubernetes";
@@ -9,6 +10,7 @@ import * as serverless from "./serverless";
 import * as storage from "./storage";
 
 export {
+    containers,
     databases,
     email,
     kubernetes,

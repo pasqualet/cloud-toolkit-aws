@@ -11,6 +11,14 @@ keywords:
   - kind/component
 pluginDownloadURL: github://api.github.com/cloud-toolkit/cloud-toolkit-aws
 types:
+  cloud-toolkit-aws:containers:ClusterSubnetsType:
+    description: The subnet type
+    type: string
+    enum:
+      - name: private
+        value: private
+      - name: public
+        value: public
   cloud-toolkit-aws:databases:MysqlVersion:
     description: Set of allowed versions for the database instance
     type: string
@@ -85,6 +93,63 @@ types:
         value: Disabled
       - name: Suspended
         value: Suspended
+  cloud-toolkit-aws:containers:ClusterArgs:
+    properties:
+      nodeGroups:
+        description: The NodeGroups to be assigned to this cluster.
+        type: array
+        items:
+          description: The NodeGroups to be assigned to this cluster.
+          $ref: "#/types/cloud-toolkit-aws:containers:ContainersClusterNodeGroupArgs"
+    type: object
+    required: []
+  cloud-toolkit-aws:containers:ContainersClusterNodeGroupArgs:
+    properties:
+      name:
+        description: The Node Group name.
+        type: string
+      subnetsType:
+        description: The subnets type to be used to deploy the Node Groups.
+        $ref: "#/types/cloud-toolkit-aws:kubernetes:ClusterSubnetsType"
+      instanceType:
+        description: The EC2 Instance Type to be used to create the Nodes.
+        type: string
+      minCount:
+        description: The minimum number of nodes running in the node group. Defaults to 1.
+        type: number
+      maxCount:
+        description: The maxium number of nodes running in the node group. Defaults to 2.
+        type: number
+    type: object
+    required:
+      - name
+  cloud-toolkit-aws:containers:NodeGroupArgs:
+    properties:
+      name:
+        description: The name that identies the resource.
+        type: string
+      subnetIds:
+        description: The list of subnets ids where the nodes will be deployed.
+        type: array
+        items:
+          description: The list of subnets ids where the nodes will be deployed.
+          type: string
+      clusterName:
+        description: The ECS cluster name.
+        type: string
+      instanceType:
+        description: The aws instance type to use for the nodes. Defaults to "t3.medium".
+        type: string
+      minCount:
+        description: The minimum number of nodes running in the node group. Defaults to 1.
+        type: number
+      maxCount:
+        description: The maxium number of nodes running in the node group. Defaults to 2.
+        type: number
+    type: object
+    required:
+      - name
+      - clusterName
   cloud-toolkit-aws:databases:MysqlArgs:
     properties:
       instance:
@@ -1196,6 +1261,105 @@ resources:
       - zoneId
     isComponent: true
     type: object
+  cloud-toolkit-aws:containers:Cluster:
+    description: Cluster is a component that deploy the Cluster application in the cluster.
+    properties:
+      ecsCluster:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:ecs%2fcluster:Cluster
+      nodeGroups:
+        description: ""
+        type: array
+        items:
+          description: ""
+          $ref: "#/types/cloud-toolkit-aws:kubernetes:NodeGroup"
+      ecsCapacityProviders:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:ecs%2fclusterCapacityProviders:ClusterCapacityProviders
+      serviceRole:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:iam%2frole:Role
+      serviceRolePolicyAttachments:
+        description: ""
+        type: array
+        items:
+          description: ""
+          $ref: /aws/v5.10.0/schema.json#/resources/aws:iam%2frolePolicyAttachment:RolePolicyAttachment
+    required:
+      - ecsCluster
+      - nodeGroups
+      - ecsCapacityProviders
+      - serviceRole
+      - serviceRolePolicyAttachments
+    inputProperties:
+      nodeGroups:
+        description: The NodeGroups to be assigned to this cluster.
+        type: array
+        items:
+          description: The NodeGroups to be assigned to this cluster.
+          $ref: "#/types/cloud-toolkit-aws:containers:ContainersClusterNodeGroupArgs"
+    requiredInputs: []
+    isComponent: true
+    type: object
+  cloud-toolkit-aws:containers:NodeGroup:
+    description: NodeGroup is a component that deploy the NodeGroup application in
+      the cluster.
+    properties:
+      launchTemplate:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:ec2%2flaunchTemplate:LaunchTemplate
+      autoscalingGroup:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:autoscaling%2fgroup:Group
+      capacityProvider:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:ecs%2fcapacityProvider:CapacityProvider
+      iamInstanceProfile:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:iam%2finstanceProfile:InstanceProfile
+      instanceRole:
+        description: ""
+        $ref: /aws/v5.10.0/schema.json#/resources/aws:iam%2frole:Role
+      instanceRolePolicyAttachments:
+        description: ""
+        type: array
+        items:
+          description: ""
+          $ref: /aws/v5.10.0/schema.json#/resources/aws:iam%2frolePolicyAttachment:RolePolicyAttachment
+    required:
+      - launchTemplate
+      - autoscalingGroup
+      - capacityProvider
+      - iamInstanceProfile
+      - instanceRole
+      - instanceRolePolicyAttachments
+    inputProperties:
+      name:
+        description: The name that identies the resource.
+        type: string
+      subnetIds:
+        description: The list of subnets ids where the nodes will be deployed.
+        type: array
+        items:
+          description: The list of subnets ids where the nodes will be deployed.
+          type: string
+      clusterName:
+        description: The ECS cluster name.
+        type: string
+      instanceType:
+        description: The aws instance type to use for the nodes. Defaults to "t3.medium".
+        type: string
+      minCount:
+        description: The minimum number of nodes running in the node group. Defaults to 1.
+        type: number
+      maxCount:
+        description: The maxium number of nodes running in the node group. Defaults to 2.
+        type: number
+    requiredInputs:
+      - name
+      - clusterName
+    isComponent: true
+    type: object
   cloud-toolkit-aws:databases:Mysql:
     description: Cloud Toolkit component for Mysql instances.
     properties:
@@ -1672,46 +1836,12 @@ resources:
       - cniChart
       - domain
     inputProperties:
-      vpcId:
-        description: The VPC ID where the cluster will be deployed
-        type: string
-      privateSubnetIds:
-        description: The list of private subnet ids where for the EKS cluster. These
-          subnets will be tagged for Kubernetes purposes.
-        type: array
-        items:
-          description: The list of private subnet ids where for the EKS cluster. These
-            subnets will be tagged for Kubernetes purposes.
-          type: string
-      publicSubnetIds:
-        description: The list of public subnet ids where for the EKS cluster. These
-          subnets will be tagged for Kubernetes purposes.
-        type: array
-        items:
-          description: The list of public subnet ids where for the EKS cluster. These
-            subnets will be tagged for Kubernetes purposes.
-          type: string
-      version:
-        description: Desired Kubernetes version for control plane. Defaults to '1.22'.
-        type: string
-      api:
-        description: Configure the Kubernetes cluster API.
-        $ref: "#/types/cloud-toolkit-aws:kubernetes:ClusterApiArgs"
       nodeGroups:
         description: The NodeGroups to be assigned to this cluster.
         type: array
         items:
           description: The NodeGroups to be assigned to this cluster.
-          $ref: "#/types/cloud-toolkit-aws:kubernetes:ClusterNodeGroupArgs"
-      oidcProviders:
-        description: The OIDC Providers configuration.
-        $ref: "#/types/cloud-toolkit-aws:kubernetes:ClusterOidcProvidersArgs"
-      addons:
-        description: The addons installed in the cluster.
-        $ref: "#/types/cloud-toolkit-aws:kubernetes:AddonsArgs"
-      baseDomain:
-        description: The base domain.
-        type: string
+          $ref: "#/types/cloud-toolkit-aws:containers:ContainersClusterNodeGroupArgs"
     requiredInputs: []
     isComponent: true
     type: object
@@ -2015,24 +2145,15 @@ resources:
       name:
         description: The name that identies the resource.
         type: string
-      clusterVersion:
-        description: The Kubernetes cluster version.
-        type: string
-      clusterEndpoint:
-        description: The Kubernetes cluster endpoint.
-        type: string
-      clusterCA:
-        description: The CA used by the Kubernetes cluster.
-        type: string
-      clusterName:
-        description: The Kubernetes cluster name.
-        type: string
       subnetIds:
         description: The list of subnets ids where the nodes will be deployed.
         type: array
         items:
           description: The list of subnets ids where the nodes will be deployed.
           type: string
+      clusterName:
+        description: The ECS cluster name.
+        type: string
       instanceType:
         description: The aws instance type to use for the nodes. Defaults to "t3.medium".
         type: string
@@ -2042,17 +2163,9 @@ resources:
       maxCount:
         description: The maxium number of nodes running in the node group. Defaults to 2.
         type: number
-      maxUnavailable:
-        description: The maximum number of nodes unavailable at once during a version
-          update. Defaults to 1.
-        type: number
     requiredInputs:
       - name
-      - clusterVersion
-      - clusterEndpoint
-      - clusterCA
       - clusterName
-      - subnetIds
     isComponent: true
     type: object
   cloud-toolkit-aws:landingzone:AccountIam:
