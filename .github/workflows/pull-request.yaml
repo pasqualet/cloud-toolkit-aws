@@ -32,6 +32,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
+      - run: go version
       - name: Install pulumictl
         uses: jaxxstorm/action-install-gh-release@v1.5.0
         with:
@@ -39,6 +40,7 @@ jobs:
 
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
+      - run: go version
       - name: Build SDKs
         run: make build_sdk
   publish_provider:

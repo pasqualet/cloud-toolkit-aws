@@ -8,8 +8,8 @@ import * as utilities from "./utilities";
 export { ProviderArgs } from "./provider";
 export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
-
 utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
+
 
 // Export sub-modules:
 import * as commons from "./commons";
@@ -42,3 +42,4 @@ pulumi.runtime.registerResourcePackage("cloud-toolkit-aws", {
 });
 import "@pulumi/aws";
 import "@pulumi/kubernetes";
+import "@pulumi/random";
