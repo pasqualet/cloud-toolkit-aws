@@ -1,4 +1,4 @@
-module github.com/cloud-toolkit/cloud-toolkit-aws/sdk
+module github.com/pasqualet/cloud-toolkit-aws/sdk
 
 go 1.17
 
