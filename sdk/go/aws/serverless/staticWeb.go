@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/cloud-toolkit/cloud-toolkit-aws/sdk/go/aws/storage"
+	"github.com/pasqualet/cloud-toolkit-aws/sdk/go/aws/storage"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/acm"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/cloudfront"

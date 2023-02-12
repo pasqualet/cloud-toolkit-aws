@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/cloud-toolkit/cloud-toolkit-aws/sdk/go/aws/serverless"
+	"github.com/pasqualet/cloud-toolkit-aws/sdk/go/aws/serverless"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/blang/semver"
-	"github.com/cloud-toolkit/cloud-toolkit-aws/sdk/go/aws"
+	"github.com/pasqualet/cloud-toolkit-aws/sdk/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

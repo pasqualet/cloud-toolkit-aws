@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/cloud-toolkit/cloud-toolkit-aws/sdk/go/aws/serverless"
+	"github.com/pasqualet/cloud-toolkit-aws/sdk/go/aws/serverless"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/iam"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/resourcegroups"

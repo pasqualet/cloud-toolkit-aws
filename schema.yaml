@@ -3397,6 +3397,6 @@ language:
     packageName: cloud_toolkit_aws
   go:
     generateResourceContainerTypes: true
-    importBasePath: github.com/cloud-toolkit/cloud-toolkit-aws/sdk/go/aws
+    importBasePath: github.com/pasqualet/cloud-toolkit-aws/sdk/go/aws
     liftSingleValueMethodReturns: true
     respectSchemaVersion: true

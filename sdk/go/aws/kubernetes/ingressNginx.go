@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/cloud-toolkit/cloud-toolkit-aws/sdk/go/aws/commons"
+	"github.com/pasqualet/cloud-toolkit-aws/sdk/go/aws/commons"
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/apiextensions"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
