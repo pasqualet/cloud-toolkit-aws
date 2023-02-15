@@ -9,7 +9,7 @@ CODEGEN         := pulumi-gen-${PACK}
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
 
-generate:: gen_nodejs_sdk gen_python_sdk
+generate_sdk:: gen_nodejs_sdk gen_python_sdk
 
 build_sdk:: build_nodejs_sdk build_python_sdk
 
@@ -38,7 +38,7 @@ gen_nodejs_sdk::
 	echo 'import "@pulumi/random";' >> sdk/nodejs/index.ts
 
 build_nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
-build_nodejs_sdk:: gen_nodejs_sdk
+build_nodejs_sdk::
 	cd sdk/nodejs/ && \
 		echo "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.18" > go.mod && \
 		npm install && \
@@ -48,13 +48,17 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
 
+release_nodejs_sdk::
+	cd sdk/nodejs/bin && \
+		npm publish
+
 gen_python_sdk::
 	rm -rf sdk/python
 	cd provider/cmd/${CODEGEN} && go run . python ../../../sdk/python ${SCHEMA_PATH}
 	cp ${WORKING_DIR}/README.md sdk/python
 
 build_python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
-build_python_sdk:: gen_python_sdk
+build_python_sdk::
 	cd sdk/python/ && \
 		echo "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.18" > go.mod && \
 		cp ../../README.md . && \
@@ -63,6 +67,10 @@ build_python_sdk:: gen_python_sdk
 		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && python3 setup.py build sdist
+
+release_python_sdk::
+	cd sdk/python/bin && \
+		twine upload dist/*
 
 dist:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 dist:: build_provider

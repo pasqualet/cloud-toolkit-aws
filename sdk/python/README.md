@@ -58,9 +58,10 @@ For example you cloud add a `StaticPage` component adding the following content 
 +        $ref: /aws/v5.10.0/schema.json#/resources/aws:s3%2fbucketV2:BucketV2
 ```
 
-After updating the Schema content, it is required to regenerate the SDKs with the following command.
+After updating the Schema content, it is required to regenerate the SDKs with the following commands:
 
 ```bash
+make generate_sdk
 make build_sdk
 ```
 
