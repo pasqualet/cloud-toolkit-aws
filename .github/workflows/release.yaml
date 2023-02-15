@@ -99,4 +99,4 @@ jobs:
         working-directory: ./sdk/python/bin
         env:
           TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
