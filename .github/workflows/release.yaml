@@ -62,7 +62,7 @@ jobs:
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
       - name: Create SDK
-        run: make build_sdk
+        run: make build_nodejs_sdk
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
