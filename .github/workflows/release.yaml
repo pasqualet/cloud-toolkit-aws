@@ -60,17 +60,17 @@ jobs:
           repo: pulumi/pulumictl
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
-     - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
+      - uses: actions/setup-node@v3
+         with:
+           node-version: '16.x'
+           registry-url: 'https://registry.npmjs.org'
       - name: Create NodeJS SDK
         run: make build_nodejs_sdk
-       - name: Release NodeJS SDK
-        run: npm publish
-        working-directory: ./sdk/nodejs/bin
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Release NodeJS SDK
+       run: npm publish
+       working-directory: ./sdk/nodejs/bin
+       env:
+         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   release_python_sdk:
     name: Release Python SDK
