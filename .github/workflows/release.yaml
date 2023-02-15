@@ -43,8 +43,8 @@ jobs:
   #        nodeversion:
   #          - 16.x
 
-  publish_nodejs_sdk:
-    name: publish
+  release_nodejs_sdk:
+    name: Release NodeJS SDK
     runs-on: macos-12
     steps:
       - name: Checkout Repo
@@ -75,8 +75,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish_python_sdk:
-    name: publish
+  release_python_sdk:
+    name: Release Python SDK
     runs-on: macos-12
     steps:
       - name: Checkout Repo
@@ -96,7 +96,7 @@ jobs:
         run: make build_python_sdk
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.10
+          python-version: '3.10'
       - run: twine upload dist/*
         working-directory: ./sdk/python/bin
         env:
