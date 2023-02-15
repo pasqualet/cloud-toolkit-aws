@@ -8,9 +8,6 @@ on:
 permissions:
   contents: write
 
-env:
-  GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
-
 jobs:
   #  publish_binary:
   #    name: publish
